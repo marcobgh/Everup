@@ -1,0 +1,47 @@
+.new-client-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.new-client-container form {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(64, 100, 124);
+    border-radius: 20px;
+    padding: 1rem 2rem;
+}
+
+.new-client-container h1 {
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0;
+}
+
+.new-client-container label {
+    color: white;
+}
+
+.new-client-container input {
+    margin-bottom: 1rem;
+}
+
+.btn {
+    width: 100%;
+    background-color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 7px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.new-client-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}

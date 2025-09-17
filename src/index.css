@@ -6,3 +6,22 @@
 body {
     font-family: "Poppins", sans-serif;
 }
+
+ul {
+    list-style: none;
+}
+
+input {
+    font-family: 'Poppins';
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+button {
+    font-family: 'Poppins';
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
