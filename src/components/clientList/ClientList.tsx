@@ -2,10 +2,10 @@ import "./ClientList.css"
 import { useClientContext } from "../../context";
 
 interface Props {
-    onSelectedAddNew: (selected: boolean) => void
+    onClicked: (type: string) => void
 }
 
-function ClientList ({ onSelectedAddNew }:Props) {
+function ClientList ({ onClicked }:Props) {
 
     const { client } = useClientContext()
 
@@ -14,7 +14,7 @@ function ClientList ({ onSelectedAddNew }:Props) {
             <div className="clients-header">
                 <h1>Listagem de clientes</h1>
                 <ul>
-                    <li onClick={() => onSelectedAddNew(true)}>Novo cliente +</li>
+                    <li onClick={() => onClicked('create')}>Novo cliente +</li>
                     <li><i className="fa-solid fa-arrows-rotate"></i></li>
                 </ul>
             </div>
@@ -29,6 +29,7 @@ function ClientList ({ onSelectedAddNew }:Props) {
                         <td>{client.razao}</td>
                         <td>{client.cnpj}</td>
                         <td>{client.status}</td>
+                        <td onClick={() => onClicked('view')} className="view-client-btn"><span className="btn-text">Abrir</span></td>
                     </tr>
                 ))}
             </table>

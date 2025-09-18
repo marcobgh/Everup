@@ -8,18 +8,23 @@ import { ClientContext, type Clients } from '../context'
 function App() {
 
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [AddNew, setAddNew] = useState<boolean | null>(null);
+  const [blur, setBlur] = useState<boolean | null>(null);
 
   const handleSelectedOption = (selected: number) => {
     setSelectedOption(selected)
   }
 
-  const handleClicked = () => {
-    if (AddNew === true) {
-      setAddNew(false)
+  const handleClicked = (type: string) => {
+    if(type === 'create' || type === 'view') {
+      if(!blur) {
+         setBlur(true)
+      }
+      else {
+        setBlur(false)
+      }
     }
     else {
-      setAddNew(true)
+      setBlur(false)
     }
   }
 
@@ -31,12 +36,12 @@ function App() {
   return (
     <div>
       <ClientContext.Provider value={{client, setClient}}>
-        <div className={AddNew ? 'container blur' : 'container'}>
+        <div className={blur ? 'container blur' : 'container'}>
           <Sidebar onSelectedOption={handleSelectedOption}></Sidebar>
-          {selectedOption === 2 && <ClientList onSelectedAddNew={handleClicked} />}
+          {selectedOption === 2 && <ClientList onClicked={handleClicked} />}
           {selectedOption === 1 && <></>}
         </div>
-        {AddNew && <NewClient clicked={handleClicked}></NewClient>}
+        {blur && <NewClient clicked={handleClicked}></NewClient>}
       </ClientContext.Provider>
     </div>
       
