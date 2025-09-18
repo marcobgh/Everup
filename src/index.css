@@ -16,6 +16,9 @@ input {
     padding: 1rem;
     border-radius: 10px;
     font-size: 1rem;
+    border: none;
+    outline: none;
+    box-shadow: none;
 }
 
 button {

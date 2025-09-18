@@ -3,6 +3,6 @@
     flex-direction: row;
 }
 
-.add-new {
+.blur {
     filter: blur(4px)
 }

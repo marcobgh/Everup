@@ -1,42 +1,13 @@
 import "./ClientList.css"
+import { useClientContext } from "../../context";
 
 interface Props {
     onSelectedAddNew: (selected: boolean) => void
 }
 
 function ClientList ({ onSelectedAddNew }:Props) {
-    const clients = [
-        {
-            razao: "EMPRESA 1",
-            cnpj: "08.253.539/00001-64",
-            status: "ATIVO"
-        },
-        {
-            razao: "EMPRESA 2",
-            cnpj: "08.253.539/00001-64",
-            status: "ATIVO"
-        },
-        {
-            razao: "EMPRESA 3",
-            cnpj: "08.253.539/00001-64",
-            status: "ATIVO"
-        },
-        {
-            razao: "EMPRESA 1",
-            cnpj: "08.253.539/00001-64",
-            status: "ATIVO"
-        },
-        {
-            razao: "EMPRESA 2",
-            cnpj: "08.253.539/00001-64",
-            status: "ATIVO"
-        },
-        {
-            razao: "EMPRESA 3",
-            cnpj: "08.253.539/00001-64",
-            status: "ATIVO"
-        },
-    ]
+
+    const { client } = useClientContext()
 
     return(
         <div className="client-list">
@@ -53,7 +24,7 @@ function ClientList ({ onSelectedAddNew }:Props) {
                     <th>CPNJ</th>
                     <th>Status</th>
                 </tr>
-                {clients.map(client => (
+                {client.map(client => (
                     <tr key={client.razao}>
                         <td>{client.razao}</td>
                         <td>{client.cnpj}</td>

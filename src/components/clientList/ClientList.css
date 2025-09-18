@@ -4,7 +4,7 @@
 }
 
 .client-list h1 {
-    color: black;
+    color:rgba(64, 100, 124);
     padding: 0;
     margin: 0;
 }
@@ -12,7 +12,7 @@
 .client-table {
     width: 100%;
     text-align: left;
-    border: 1px solid;
+
     border-collapse: collapse;
 }
 
@@ -40,7 +40,6 @@
     
 }
 
-
 .clients-header li {
     width: fit-content;
     color: white;
@@ -55,7 +54,15 @@
 
 .clients-header li:hover {
     transform: scale(1.1);
+
+    i {
+        transform: rotate(180deg);
+    }
+        
 }
 .clients-header li i {
     padding: 0;
+    transition: all 0.4s;
 }
+
+

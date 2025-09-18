@@ -3,6 +3,7 @@ import Sidebar from "../components/sidebar/Sidebar"
 import ClientList from '../components/clientList/ClientList'
 import NewClient from '../components/newClient/NewClient'
 import { useState } from 'react'
+import { ClientContext, type Clients } from '../context'
 
 function App() {
 
@@ -22,15 +23,21 @@ function App() {
     }
   }
 
+  const [client, setClient] = useState<Clients[]>(
+    [
+    ]
+  )
 
   return (
     <div>
-      <div className={AddNew ? 'container add-new' : 'container'}>
-        <Sidebar onSelectedOption={handleSelectedOption}></Sidebar>
-        {selectedOption === 2 && <ClientList onSelectedAddNew={handleClicked} />}
-        {selectedOption === 1 && <></>}
-      </div>
-      {AddNew && <NewClient clicked={handleClicked}></NewClient>}
+      <ClientContext.Provider value={{client, setClient}}>
+        <div className={AddNew ? 'container blur' : 'container'}>
+          <Sidebar onSelectedOption={handleSelectedOption}></Sidebar>
+          {selectedOption === 2 && <ClientList onSelectedAddNew={handleClicked} />}
+          {selectedOption === 1 && <></>}
+        </div>
+        {AddNew && <NewClient clicked={handleClicked}></NewClient>}
+      </ClientContext.Provider>
     </div>
       
   )
