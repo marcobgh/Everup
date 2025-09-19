@@ -1,0 +1,15 @@
+.error-container {
+    position: fixed;
+    align-self: baseline;
+    background-color: rgba(255, 0, 0, 0.651);
+    color: white;
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+}
+
+.error-container.show {
+  opacity: 1;
+}

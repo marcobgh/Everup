@@ -8,26 +8,27 @@ import ViewClient from '../components/viewClient/ViewClient'
 
 function App() {
 
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [blur, setBlur] = useState<boolean | null>(null);
-  const [viewWindow, setViewWindow] = useState<string | null>(null);
+  const [window, setWindow] = useState<string | null>(null);
+  const [choseClient, setChoseClient] = useState<string | null>(null);
 
-  const handleSelectedOption = (selected: number) => {
+  const handleSelectedOption = (selected: string) => {
     setSelectedOption(selected)
   }
 
-  const handleClicked = (type: string) => {
+  const handleClicked = (type: string, cnpj?:string) => {
     if (type === 'create') {
       setBlur(true);
-      setViewWindow('create');
+      setWindow('create');
     }
-    if (type === 'view') {
-      setBlur(true);
-      setViewWindow('view');
+    if (type === 'viewClient') {
+      setSelectedOption('viewClient')
+      setChoseClient(String(cnpj))
     }
     if (type === 'close') {
       setBlur(false);
-      setViewWindow(null)
+      setWindow(null)
     }
   }
 
@@ -38,11 +39,11 @@ function App() {
       <ClientContext.Provider value={{client, setClient}}>
         <div className={blur ? 'container blur' : 'container'}>
           <Sidebar onSelectedOption={handleSelectedOption}></Sidebar>
-          {selectedOption === 2 && <ClientList onClicked={handleClicked} />}
-          {selectedOption === 1 && <></>}
+          {selectedOption === 'clientList' && <ClientList onClicked={handleClicked}/>}
+          {selectedOption === 'home' && <></>}
+          {selectedOption === 'viewClient' && <ViewClient clicked={handleSelectedOption} cnpj={String(choseClient)}></ViewClient>}
         </div>
-        {(viewWindow === 'create') ? <NewClient clicked={handleClicked}></NewClient> : null}
-        {(viewWindow === 'view') ? <ViewClient clicked={handleClicked}></ViewClient> : null}
+        {(window === 'create') ? <NewClient clicked={handleClicked}></NewClient> : null}
       </ClientContext.Provider>
     </div>
       

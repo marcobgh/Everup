@@ -1,28 +1,46 @@
 .view-client-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 30vw;
-    height: auto;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: left;
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 2rem 4rem;
 }
 
-.view-client-container {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(64, 100, 124);
-    border-radius: 20px;
-    padding: 1rem 2rem;
+.view-client-container h1 {
+    color: rgba(64, 100, 124);
+    margin: 0 ;
+    padding: 1rem;
 }
 
 .close-btn {
-    align-self: flex-end;
-    color: white;
+    align-self: flex-start;
+    color: rgba(64, 100, 124);
     font-size: 1.5rem;
     cursor: pointer;
 }
 .close-btn:hover {
     color: rgb(242, 29, 29);
+}
+
+.client-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1rem; 
+    text-transform: uppercase;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column; /* label em cima, span embaixo */
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.grid-item label {
+    color: rgb(162, 172, 179);
+}
+
+.grid-item span {
+    color: rgba(64, 100, 124);
+    font-size: 1.4rem;
 }

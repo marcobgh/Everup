@@ -2,7 +2,7 @@ import "./ClientList.css"
 import { useClientContext } from "../../context";
 
 interface Props {
-    onClicked: (type: string) => void
+    onClicked: (type: string, cnpj?: string) => void;
 }
 
 function ClientList ({ onClicked }:Props) {
@@ -15,7 +15,7 @@ function ClientList ({ onClicked }:Props) {
                 <h1>Listagem de clientes</h1>
                 <ul>
                     <li onClick={() => onClicked('create')}>Novo cliente +</li>
-                    <li><i className="fa-solid fa-arrows-rotate"></i></li>
+                    <li onClick={() => window.location.reload()}><i className="fa-solid fa-arrows-rotate"></i></li>
                 </ul>
             </div>
             <table className="client-table">
@@ -29,7 +29,7 @@ function ClientList ({ onClicked }:Props) {
                         <td>{client.razao}</td>
                         <td>{client.cnpj}</td>
                         <td>{client.status}</td>
-                        <td className="view-client-btn"><span onClick={() => onClicked('view')}className="btn-text">Abrir</span></td>
+                        <td className="view-client-btn"><span onClick={() => {onClicked('viewClient', client.cnpj);}}className="btn-text">Abrir</span></td>
                     </tr>
                 ))}
             </table>
