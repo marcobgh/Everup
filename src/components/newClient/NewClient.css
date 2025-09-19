@@ -9,6 +9,7 @@
     justify-content: center;
 }
 
+
 .new-client-container form {
     display: flex;
     flex-direction: column;
@@ -21,6 +22,7 @@
     font-weight: 600;
     font-size: 1rem;
     padding: 0;
+    margin: 1rem 2rem
 }
 
 .new-client-container label {
@@ -31,17 +33,38 @@
     margin-bottom: 1rem;
 }
 
-.btn {
+.close-btn {
+    align-self: flex-end;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.close-btn:hover {
+    color: rgb(242, 29, 29);
+}
+
+.add-btn {
     width: 100%;
     background-color: white;
     padding: 0.5rem 1rem;
     border-radius: 7px;
     text-align: center;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+    background-color: rgba(255, 255, 255, 0.772);
 }
 
 .new-client-buttons {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    color: rgb(64, 100, 124);
+}
+
+.add-btn i {
+    margin-left: 0.5rem;
 }

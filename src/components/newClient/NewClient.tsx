@@ -3,11 +3,11 @@ import { useClientContext } from '../../context';
 import './NewClient.css'
 
 interface Props {
-    clicked: (type: string) => void
+    clicked: (type: string) => void;
 }
 
 function formatCNPJ(value: string) {
-  return value
+    return value
     .replace(/\D/g, "") // remove tudo que não for número
     .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
 }
@@ -15,7 +15,7 @@ function formatCNPJ(value: string) {
 function NewClient({ clicked }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const { client, setClient } = useClientContext()
+    const { client, setClient } = useClientContext();
     
     function handleClick() {
         const cnpj = String(inputRef.current?.value);
@@ -41,12 +41,12 @@ function NewClient({ clicked }: Props) {
     return(
         <div className='new-client-container'>
             <form className=''>
+                <div className='close-btn' onClick={() => clicked('close')}><i className="fa-solid fa-xmark"></i></div>
                 <h1>Adicione novo CNPJ para consulta</h1>
                 <label htmlFor='cnpj'>CNPJ:</label>
                 <input id='cnpj' type="text" ref={inputRef} />
                 <div className='new-client-buttons'>
-                    <div className='btn' onClick={() => clicked('close')}>Cancelar</div>
-                    <div className='btn' onClick={() => handleClick()}>Adicionar</div>
+                    <div className='add-btn' onClick={() => handleClick()}>Adicionar<i className="fa-solid fa-user-plus"></i></div>
                 </div>
             </form>
         </div>

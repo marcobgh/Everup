@@ -29,7 +29,7 @@ function ClientList ({ onClicked }:Props) {
                         <td>{client.razao}</td>
                         <td>{client.cnpj}</td>
                         <td>{client.status}</td>
-                        <td onClick={() => onClicked('view')} className="view-client-btn"><span className="btn-text">Abrir</span></td>
+                        <td className="view-client-btn"><span onClick={() => onClicked('view')}className="btn-text">Abrir</span></td>
                     </tr>
                 ))}
             </table>
