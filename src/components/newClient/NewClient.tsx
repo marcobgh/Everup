@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import { useClientContext } from '../../context';
 import './NewClient.css'
 import Error from '../error/Error';
+import axios from "axios";
+
 
 interface Props {
     clicked: (type: string) => void;
@@ -18,24 +20,33 @@ function NewClient({ clicked }: Props) {
 
     const { client, setClient } = useClientContext();
 
-    const [ error, setError ] = useState<string | null>(null)   
+    const [data, setData] = useState<any>(null);
+
+    const [ error, setError ] = useState<string | null>(null)
+
     function handleClick() {
         const cnpj = String(inputRef.current?.value);
+
+        axios.post(`https://enormous-ram-alive.ngrok-free.app/consult/${cnpj}`)
+            .then((res) => setData(res.data))
+            .catch((err) => console.log("Erro: ", err));
+
         if(!cnpj) {
             setError('O campo não pode estar em branco')
         }
         else if(cnpj.length === 14 || cnpj.length === 18)  {
-            if(addNewClient()) {
+            if(addNewClient(cnpj)) {
                 clicked('close');
             };
         }
         else {setError('O CNPJ deve ter 10 ou 14 caracteres')}
     }
 
-    function addNewClient() {
-        const cnpj = formatCNPJ(String(inputRef.current?.value));
+    function addNewClient(rawCnpj: string) {
+        const cnpj = formatCNPJ(rawCnpj)
     
         if (!client.find(c => c.cnpj === cnpj)) {
+            
             setClient(
                 [...client, 
                     {
@@ -66,7 +77,6 @@ function NewClient({ clicked }: Props) {
                     <div className='add-btn' onClick={() => handleClick()}>Adicionar<i className="fa-solid fa-user-plus"></i></div>
                 </div>
             </form>
-
         </div>
     )
 }

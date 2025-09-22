@@ -16,7 +16,7 @@
 }
 
 .client-table tr:nth-child(even) {
-  background-color: rgba(64, 100, 124, 0.527);
+  background-color: rgba(64, 100, 124, 0.349);
   color: white;
 }
 
@@ -26,20 +26,18 @@
 
 .view-client-btn {
     text-align: right;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
 }
 
-.view-client-btn span {
-    padding: 0.7rem 2rem;
+.view-client-btn i {
+    padding-right: 1rem;
     border-radius: 10px;
-    background-color: rgba(64, 100, 124);
-    color: white;
-    box-shadow: 3px 3px rgba(64, 100, 124, 0.37);
     cursor: pointer;
+    color: rgba(64, 100, 124);
 }
 
-.view-client-btn span:hover {
-    background-color: rgba(64, 100, 124, 0.767);
+.view-client-btn i:hover {
+    color: rgba(64, 100, 124, 0.767);
 }
 
 .clients-header {
