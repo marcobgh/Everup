@@ -41,7 +41,9 @@ function NewClient({ clicked }: Props) {
                     {
                         razao: `Empresa ${client.length+1}`,
                         cnpj: cnpj,
-                        status: 'Ativo'
+                        status: 'Ativo',
+                        fantasia: `Nome fantasia da empresa ${client.length+1}`,
+                        data_fundacao: '01/01/2000'
                     }
                 ]
             )
@@ -55,7 +57,6 @@ function NewClient({ clicked }: Props) {
     return(
         <div className='new-client-container'>
             {error && <Error errorDescription={error}></Error>}
-
             <form className=''>
                 <div className='close-btn' onClick={() => clicked('close')}><i className="fa-solid fa-xmark"></i></div>
                 <h1>Adicione novo CNPJ para consulta</h1>

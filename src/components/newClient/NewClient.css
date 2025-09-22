@@ -33,7 +33,7 @@
     margin-bottom: 1rem;
 }
 
-.close-btn {
+.new-client-container .close-btn {
     align-self: flex-end;
     color: white;
     font-size: 1.5rem;

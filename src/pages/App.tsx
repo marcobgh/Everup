@@ -30,6 +30,8 @@ function App() {
       setBlur(false);
       setWindow(null)
     }
+
+    
   }
 
   const [client, setClient] = useState<Clients[]>([])
