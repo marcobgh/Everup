@@ -1,7 +1,7 @@
 # Everup
 
 Everup é um sistema criado com o objetivo de automatizar o processo de atualização cadastral.
-Embora tenha sido idealizado especialmente para instituições do sistema financeiro, que demandam maior rigor quanto à consistência de dados, em conformidade com normas de KYC (Know Your Customer) e PLD-FTP (Prevenção à Lavagem de Dinheiro e Financiamento ao Terrorismo) — o Everup pode ser adotado por qualquer empresa que deseje manter sua base de clientes sempre atualizada.
+Embora tenha sido idealizado especialmente para instituições do sistema financeiro, que demandam maior rigor quanto à consistência de dados, em conformidade com normas de KYC (Know Your Customer) e PLD-FTP (Prevenção à Lavagem de Dinheiro e Financiamento ao Terrorismo), o Everup pode ser adotado por qualquer empresa que deseje manter sua base de clientes sempre atualizada.
 
 ## Funcionalidades
 
@@ -45,4 +45,4 @@ npm run dev
 ```
 
 ### Status do projeto
-O Everup está em constante evolução. Novas funcionalidades são desenvolvidas e incorporadas diariamente, visando oferecer cada vez mais eficiência, segurança e praticidade aos usuários.
+O Everup ainda está em construção. Entretanto, novas funcionalidades são desenvolvidas e incorporadas diariamente, visando oferecer cada vez mais eficiência, segurança e praticidade aos usuários.
