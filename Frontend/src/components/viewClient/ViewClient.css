@@ -84,4 +84,16 @@
 .grid-item span {
     color: rgba(64, 100, 124);
     font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px); /* aplica o blur */
+    background: rgba(0, 0, 0, 0.2); /* opcional: escurecer */
+    z-index: 9999; /* fica acima de tudo */
 }

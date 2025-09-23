@@ -22,13 +22,13 @@ function ClientList ({ onClicked }:Props) {
                 <tr>
                     <th>Razão Social</th>
                     <th>CPNJ</th>
-                    <th>Status</th>
+                    <th>Situação</th>
                 </tr>
                 {client.map(client => (
                     <tr key={client.razao}>
                         <td>{client.razao}</td>
                         <td>{client.cnpj}</td>
-                        <td>{client.status}</td>
+                        <td>{client.situacao}</td>
                         <td className="view-client-btn"><span onClick={() => {onClicked('viewClient', client.cnpj);}}className="btn-text"><i className="fa-solid fa-square-arrow-up-right"></i> </span></td>
                     </tr>
                 ))}

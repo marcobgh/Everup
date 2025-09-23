@@ -9,7 +9,6 @@ import ViewClient from '../components/viewClient/ViewClient'
 function App() {
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [blur, setBlur] = useState<boolean | null>(null);
   const [window, setWindow] = useState<string | null>(null);
   const [choseClient, setChoseClient] = useState<string | null>(null);
 
@@ -19,7 +18,6 @@ function App() {
 
   const handleClicked = (type: string, cnpj?:string) => {
     if (type === 'create') {
-      setBlur(true);
       setWindow('create');
     }
     if (type === 'viewClient') {
@@ -27,7 +25,6 @@ function App() {
       setChoseClient(String(cnpj))
     }
     if (type === 'close') {
-      setBlur(false);
       setWindow(null)
     }
 
@@ -39,7 +36,7 @@ function App() {
   return (
     <div>
       <ClientContext.Provider value={{client, setClient}}>
-        <div className={blur ? 'container blur' : 'container'}>
+        <div className='container'>
           <Sidebar onSelectedOption={handleSelectedOption}></Sidebar>
           {selectedOption === 'clientList' && <ClientList onClicked={handleClicked}/>}
           {selectedOption === 'home' && <></>}

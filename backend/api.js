@@ -35,7 +35,16 @@ app.post('/consult', async (req, res) => {
             razao_social: data.nome,
             abertura: data.abertura,
             tipo: data.tipo,
+            situacao: data.situacao 
         }
+
+        if (data.fantasia) {
+            clientData.fantasia = data.fantasia
+        }
+        else {
+            clientData.fantasia = "Não há informações"
+        }
+
         
         res.json(clientData);
     } catch (error) {

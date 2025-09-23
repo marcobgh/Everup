@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useClientContext } from '../../context';
 import './ViewClient.css'
+import DeleteClient from '../deleteClient/DeleteClient';
 
 interface Props {
     clicked: (type: string) => void;
@@ -9,9 +10,26 @@ interface Props {
 
 function ViewClient({ clicked, cnpj }: Props) {
 
-    const { client } = useClientContext();
+    const { client, setClient } = useClientContext();
+    const [deleteClient, setDeleteClient] = useState(false)
+
+    function onClick(choice: string) {
+        if(choice === 'cancel'){ 
+            setDeleteClient(false)
+        }
+        else if (choice === 'delete') {
+            onDelete(clientFound?.cnpj)
+            setDeleteClient(false)
+            clicked('clientList')
+        }
+    }
 
     const clientFound = client.find( c => c.cnpj === cnpj);
+
+    function onDelete(cnpj: string | undefined) {
+        setClient((prevClients) => prevClients.filter((c) => c.cnpj !== cnpj));
+    }
+
 
     return(
         <div className='view-client-container'>
@@ -20,7 +38,8 @@ function ViewClient({ clicked, cnpj }: Props) {
                 <h1>Dados da empresa</h1>
                 <div className="view-client-buttons">
                     <button className='reload-btn'> Realizar nova consulta </button>
-                    <button className='delete-btn'> Excluir <i className="fa-solid fa-trash"></i></button>
+                    <button className='delete-btn' onClick={() => setDeleteClient(true)}> Excluir <i className="fa-solid fa-trash"></i></button>
+                    {deleteClient && <DeleteClient clicked={onClick}></DeleteClient>}
                 </div>
             </div>
             <div className='client-info'>
@@ -38,7 +57,11 @@ function ViewClient({ clicked, cnpj }: Props) {
                 </div>
                 <div className="grid-item">
                     <label htmlFor="fundacao">Fundação</label>
-                    <span id='fundacao'>{clientFound?.data_fundacao}</span>
+                    <span id='fundacao'>{clientFound?.data_abertura}</span>
+                </div>
+                <div className="grid-item">
+                    <label htmlFor="situacao">Situação</label>
+                    <span id='situacao'>{clientFound?.situacao}</span>
                 </div>
             </div>
         </div>

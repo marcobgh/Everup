@@ -3,9 +3,10 @@ import { createContext, useContext } from "react";
 export interface Clients {
     razao: string,
     cnpj: string,
-    status: string,
+    situacao: string,
+    tipo: string,
     fantasia: string,
-    data_fundacao: string,
+    data_abertura: string,
 }
 
 interface ClientContextType {

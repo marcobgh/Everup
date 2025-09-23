@@ -1,4 +1,4 @@
-import { use, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useClientContext } from '../../context';
 import './NewClient.css'
 import Error from '../error/Error';
@@ -11,7 +11,9 @@ type ConsultaDTO = {
     razao_social: string;
     abertura: string;
     tipo: string;
+    situacao: string;
     cnpj?: string;
+    fantasia: string;
 };
 
 const URL = 'http://localhost:5001';
@@ -83,11 +85,12 @@ function NewClient({ clicked }: Props) {
         setClient((prev) => [
             ...prev,
             {
-            razao: data.razao_social,       // agora temos certeza que é string
-            cnpj: cnpjMasked,
-            status: data.tipo,
-            fantasia: `Nome fantasia da empresa ${prev.length + 1}`,
-            data_fundacao: data.abertura,
+                razao: data.razao_social,
+                cnpj: cnpjMasked,
+                situacao: data.situacao,
+                fantasia: data.fantasia,
+                data_abertura: data.abertura,
+                tipo: data.tipo,
             },
         ]);
 
