@@ -14,7 +14,7 @@ Embora tenha sido idealizado especialmente para instituições do sistema financ
 
 ## Tecnologias Utilizadas
 
-<p align="center">
+<p align="left">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="50" title="React" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="50" title="TypeScript" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="50" title="CSS3" />
@@ -37,7 +37,7 @@ cd everup
 npm install
 ```
 
-## ▶️ Uso
+## Uso
 
 ```bash
 # Inicie a aplicação
