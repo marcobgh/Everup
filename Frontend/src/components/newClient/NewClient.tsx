@@ -1,20 +1,21 @@
 import { useRef, useState } from 'react';
 import { useClientContext } from '../../context';
 import './NewClient.css'
-import Error from '../error/Error';
+import Error from '../popup/Error';
+import Sucess from '../popup/Sucess';
 
 interface Props {
     clicked: (type: string) => void;
 }
 
-type ConsultaDTO = {
-    razao_social: string;
-    abertura: string;
-    tipo: string;
-    situacao: string;
-    cnpj?: string;
-    fantasia: string;
-};
+// type ConsultaDTO = {
+//     razao_social: string;
+//     abertura: string;
+//     tipo: string;
+//     situacao: string;
+//     cnpj?: string;
+//     fantasia: string;
+// };
 
 const URL = 'http://localhost:5001';
 
@@ -28,6 +29,7 @@ function NewClient({ clicked }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
     const { client, setClient } = useClientContext();
     const [error, setError] = useState<string | null>(null);
+    const [sucess, setSucess] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false); 
 
     const handleClick = async () => {
@@ -47,13 +49,18 @@ function NewClient({ clicked }: Props) {
     }
 
     const ok = await addNewClient(raw);
-    if (ok) clicked('close');
+    if (ok) {
+        setSucess("Cliente adicionado com sucesso!");
+        clicked('close');
+    }
   };
 
   // tornei async e devolve boolean
   const addNewClient = async (rawCnpj: string): Promise<boolean> => {
     const cnpjMasked = formatCNPJ(rawCnpj);
+
     const exists = client.some((c) => c.cnpj === cnpjMasked);
+
     if (exists) {
       setError('O CNPJ informado já foi adicionado');
       return false;
@@ -78,24 +85,28 @@ function NewClient({ clicked }: Props) {
                 return false;
         }
 
+        
 
-         const data = (await resp.json()) as ConsultaDTO;
 
-        // use função no setState para evitar condição de corrida
-        setClient((prev) => [
-            ...prev,
-            {
-                razao: data.razao_social,
-                cnpj: cnpjMasked,
-                situacao: data.situacao,
-                fantasia: data.fantasia,
-                data_abertura: data.abertura,
-                tipo: data.tipo,
-            },
-        ]);
+        //  const data = (await resp.json()) as ConsultaDTO;
+
+        // // use função no setState para evitar condição de corrida
+        // setClient((prev) => [
+        //     ...prev,
+        //     {
+        //         razao: data.razao_social,
+        //         cnpj: cnpjMasked,
+        //         situacao: data.situacao,
+        //         fantasia: data.fantasia,
+        //         data_abertura: data.abertura,
+        //         tipo: data.tipo,
+        //     },
+        // ]);
 
         return true;
+        
     } catch (e) {
+        console.log(e)
         setError('Erro inesperado ao consultar');
         return false;
     } finally {
@@ -107,6 +118,7 @@ function NewClient({ clicked }: Props) {
     return(
         <div className='new-client-container'>
             {error && <Error errorDescription={error}></Error>}
+            {sucess && <Sucess popupDescription={sucess}></Sucess>}
             <form className=''>
                 <div className='close-btn' onClick={() => clicked('close')}><i className="fa-solid fa-xmark"></i></div>
                 <h1>Adicione novo CNPJ para consulta</h1>

@@ -1,64 +1,131 @@
-import express, { json } from "express";
-import axios from "axios";
+
+import { fastify } from 'fastify'
+import { DatabaseMemory } from './database-in-memory.js'
+import axios from 'axios';
 import cors from 'cors'
 
-const app = express();
+const server = fastify()
 const PORT = 5001
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+server.register(cors({
+    origin: "http://localhost:3000", // ou ["http://localhost:3000", "https://meusite.com"]
+    methods: ["GET", "POST", "PUT", "DELETE"], // métodos permitidos
+    credentials: true // se precisar mandar cookies/autenticação
 }));
 
-app.use(express.json());
+const database = new DatabaseMemory();
 
-app.post('/consult', async (req, res) => {
+server.post('/clients', (req, res) => {
 
-    const { cnpj } = req.body;
+    database.create({})
 
-    if (!cnpj) {
-        return res.status(400).json({ error: "CNPJ é obrigatório" });
-    } 
 
-    const formatedcnpj = cnpj.replace(/\D/g, "");
+    return res.status(201).send();
+})
+
+server.post('/consult', async (req, res) => {
+    const rawCnpj = req.body.cnpj;
+    const cnpj = rawCnpj.replace(/\D/g, "");
 
     const options = {
-    method: 'GET',
-    url: `https://receitaws.com.br/v1/cnpj/${formatedcnpj}`,
-    headers: {Accept: 'application/json'}
+        method: 'GET',
+        url: `https://receitaws.com.br/v1/cnpj/${cnpj}`,
+        headers: {Accept: 'application/json'}
     };
 
-    try {
-        const { data } = await axios.request(options);
-        const clientData = {
-            razao_social: data.nome,
-            abertura: data.abertura,
-            tipo: data.tipo,
-            situacao: data.situacao 
-        }
+    const { data } = await axios.request(options);
 
-        if (data.fantasia) {
-            clientData.fantasia = data.fantasia
-        }
-        else {
-            clientData.fantasia = "Não há informações"
-        }
-
-        
-        res.json(clientData);
-    } catch (error) {
-        console.error(error);
-        if (axios.isAxiosError(error)) {
-            if(error.response.status === 429) {
-                return res.status(429).json({ error: "Muitas requisições, tente novamente mais tarde"})
-            }
-            
-            console.error(error);
-        }
+    const clientData = {
+        cnpj: data.cnpj,
+        razao_social: data.nome,
+        abertura: data.abertura,
+        tipo: data.tipo,
+        situacao: data.situacao
     }
-});
 
-app.listen(PORT, () => {
+    database.create(clientData);
+
+    return res.status(201).send();
+})
+
+server.listen({
+    port: PORT,
+}, () => {
     console.log(`Server running on port ${PORT}`)
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import express, { json } from "express";
+// import axios from "axios";
+// import cors from 'cors'
+
+// const app = express();
+// const PORT = 5001
+
+// app.use(cors({
+//   origin: "http://localhost:5173",
+//   methods: ["GET", "POST", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// }));
+
+// app.use(express.json());
+
+// app.post('/consult', async (req, res) => {
+
+//     const { cnpj } = req.body;
+
+//     if (!cnpj) {
+//         return res.status(400).json({ error: "CNPJ é obrigatório" });
+//     } 
+
+//     const formatedcnpj = cnpj.replace(/\D/g, "");
+
+//     const options = {
+//     method: 'GET',
+//     url: `https://receitaws.com.br/v1/cnpj/${formatedcnpj}`,
+//     headers: {Accept: 'application/json'}
+//     };
+
+//     try {
+//         const { data } = await axios.request(options);
+//         const clientData = {
+//             razao_social: data.nome,
+//             abertura: data.abertura,
+//             tipo: data.tipo,
+//             situacao: data.situacao 
+//         }
+
+//         if (data.fantasia) {
+//             clientData.fantasia = data.fantasia
+//         }
+//         else {
+//             clientData.fantasia = "Não há informações"
+//         }
+
+        
+//         res.json(clientData);
+//     } catch (error) {
+//         if(error.response.status === 429) {
+//             return res.status(429).json({ error: "Muitas requisições, tente novamente mais tarde"})
+//         }
+//     }
+// });
+
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`)
+// })

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './Error.css'
+import './Popup.css'
 
 interface Props {
     errorDescription: string;
@@ -21,7 +21,7 @@ function Error( { errorDescription }: Props) {
 
 
     return (
-        <div className={`error-container ${visible && "show"}`}>
+        <div className={`popup-container error ${visible && "show"}`}>
             <span className='error-detail'>{errorDescription} <i className="fa-solid fa-triangle-exclamation"></i></span>
         </div>
     )

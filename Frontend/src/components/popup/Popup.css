@@ -1,4 +1,4 @@
-.error-container {
+.popup-container {
     position: fixed;
     align-self: baseline;
     background-color: rgba(255, 0, 0, 0.651);
@@ -10,6 +10,14 @@
     opacity: 0;
 }
 
-.error-container.show {
+.error {
+    background-color: rgba(255, 0, 0, 0.651);
+}
+
+.sucess {
+    background-color: rgba(37, 214, 52, 0.651);
+}
+
+.popup-container.show {
   opacity: 1;
 }
