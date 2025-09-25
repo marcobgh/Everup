@@ -7,17 +7,25 @@ export class DatabaseMemory {
         return Array.from(this.#clients.values());
     }
 
+    findClientByCnpj(cnpj) {
+        for (const client of this.#clients.values()) {
+            if (client.cnpj === cnpj) {
+              return client;
+            }   
+        }
+        return undefined; // caso não encontre
+    }
+
     create(client) {
-        const clientId = randomUUID();
+        const clientId = client.cnpj;
         this.#clients.set(clientId, client);
-        console.log('cliente criado')
     }
 
     update(id, client) {
         this.#clients.set(id, client);
     }
     
-    delete(id) {
-        this.#clients.delete(id);
+    delete(cnpj) {
+        this.#clients.delete(cnpj);
     }
 }

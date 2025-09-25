@@ -4,7 +4,7 @@
     justify-content: left;
     flex-direction: column;
     border-radius: 20px;
-    padding: 2rem 4rem;
+    padding: 5rem 4rem 2rem 4rem;
 }
 
 .view-client-container h1 {

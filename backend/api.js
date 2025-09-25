@@ -1,58 +1,116 @@
-
-import { fastify } from 'fastify'
+import Fastify from 'fastify'
 import { DatabaseMemory } from './database-in-memory.js'
 import axios from 'axios';
-import cors from 'cors'
+import cors from '@fastify/cors'
 
-const server = fastify()
+const server = Fastify()
 const PORT = 5001
 
-server.register(cors({
-    origin: "http://localhost:3000", // ou ["http://localhost:3000", "https://meusite.com"]
-    methods: ["GET", "POST", "PUT", "DELETE"], // métodos permitidos
-    credentials: true // se precisar mandar cookies/autenticação
-}));
+
+await server.register(cors, {
+    origin: "http://localhost:5173", 
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    credentials: true,
+});
 
 const database = new DatabaseMemory();
 
-server.post('/clients', (req, res) => {
+server.get('/clients', () => {
+    return database.listClients();
+})
 
-    database.create({})
+server.get('/client/:cnpj', (req, res) => {
+    const { cnpj } = req.params;
 
+    const client = database.findClientByCnpj(String(cnpj));
 
-    return res.status(201).send();
+    if (!client) {
+      return res.status(404).json({ error: 'Cliente não encontrado' });
+    }
+    return client;
+
 })
 
 server.post('/consult', async (req, res) => {
     const rawCnpj = req.body.cnpj;
     const cnpj = rawCnpj.replace(/\D/g, "");
+    
+    try{
+        const wsoptions = {
+            method: 'GET',
+            url: `https://receitaws.com.br/v1/cnpj/${cnpj}`,
+            headers: {Accept: 'application/json'}
+        };
 
-    const options = {
+        const { data } = await axios.request(wsoptions);
+
+        const clientData = {
+            cnpj: data.cnpj.replace(/\D/g, ""),
+            razao_social: data.nome,
+            abertura: data.abertura,
+            tipo: data.tipo,
+            situacao: data.situacao
+        }
+
+        if (data.fantasia) {
+            clientData.fantasia = data.fantasia;
+        }
+        else {
+            clientData.fantasia = "Não há informações"
+        }
+
+        database.create(clientData);
+
+        return res.status(201).send();
+    }
+    catch(err) {
+        console.log(e)
+    }
+})
+
+server.delete('/client/:cnpj', async (req, res) => {
+    const { cnpj } = req.params;
+    database.delete(cnpj);
+    return res.status(204).send();
+})
+
+server.put('/client/:cnpj', async (req, res) => {
+    const { cnpj } = req.params;
+
+    const wsoptions = {
         method: 'GET',
         url: `https://receitaws.com.br/v1/cnpj/${cnpj}`,
         headers: {Accept: 'application/json'}
     };
 
-    const { data } = await axios.request(options);
+    const { data } = await axios.request(wsoptions);
 
     const clientData = {
-        cnpj: data.cnpj,
+        cnpj: data.cnpj.replace(/\D/g, ""),
         razao_social: data.nome,
         abertura: data.abertura,
         tipo: data.tipo,
         situacao: data.situacao
     }
+    if (data.fantasia) {
+        clientData.fantasia = data.fantasia;
+    }
+    else {
+        clientData.fantasia = "Não há informações"
+    }
 
-    database.create(clientData);
+    database.update(cnpj, clientData);
 
-    return res.status(201).send();
-})
+    return res.status(200).send();
+});
 
-server.listen({
-    port: PORT,
-}, () => {
-    console.log(`Server running on port ${PORT}`)
-})
+server.listen({ port: PORT })
+    .then(() => console.log(`🚀 Server running on port ${PORT}`))
+    .catch(err => {
+        console.error(err)
+        process.exit(1)
+    })
+
 
 
 
