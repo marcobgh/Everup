@@ -8,15 +8,6 @@ interface Props {
     clicked: (type: string) => void;
 }
 
-// type ConsultaDTO = {
-//     razao_social: string;
-//     abertura: string;
-//     tipo: string;
-//     situacao: string;
-//     cnpj?: string;
-//     fantasia: string;
-// };
-
 const URL = 'http://localhost:5001';
 
 function formatCNPJ(value: string) {
@@ -27,7 +18,6 @@ function formatCNPJ(value: string) {
 
 function NewClient({ clicked }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
-    const { client, setClient } = useClientContext();
     const [error, setError] = useState<string | null>(null);
     const [sucess, setSucess] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false); 
@@ -35,36 +25,55 @@ function NewClient({ clicked }: Props) {
     const handleClick = async () => {
         setError(null);
 
-    const raw = String(inputRef.current?.value || '').trim();
-    if (!raw) {
-        setError('O campo não pode estar em branco');
-        return;
+        const raw = String(inputRef.current?.value || '').trim();
+        const cnpj = raw.replace(/\D/g, '');
+        if (!raw) {
+            setError('O campo não pode estar em branco');
+            return;
+        }
+
+        // aceita digitado com/sem máscara
+        
+        if (cnpj.length !== 14) {
+            setError('O CNPJ deve ter 14 dígitos');
+            return;
+        }
+        
+        setIsLoading(true);
+        const clientExists =  await findClient(cnpj);
+
+        if (clientExists) {
+            setError('O CNPJ informado já está cadastrado')
+            setIsLoading(false);
+            return;
+        }
+
+        const ok = await addNewClient(cnpj);
+
+        if (ok) {
+            setSucess("Cliente adicionado com sucesso!");
+            clicked('close');
+        }
+
+    };
+
+    const findClient = async (rawCnpj: string) => {
+        try {
+            const resp = await fetch(`${URL}/client/${rawCnpj}`, {
+                headers: { 'Accept': 'application/json' },
+            });
+            
+            if (resp.status === 404) {
+                return false;
+            }
+            return true;
+        }   
+        catch (err) {
+            setError('Não foi possível consultar a base de dados');
+        }
     }
 
-    // aceita digitado com/sem máscara
-    const len = raw.replace(/\D/g, '').length;
-    if (len !== 14) {
-        setError('O CNPJ deve ter 14 dígitos');
-        return;
-    }
-
-    const ok = await addNewClient(raw);
-    if (ok) {
-        setSucess("Cliente adicionado com sucesso!");
-        clicked('close');
-    }
-  };
-
-  // tornei async e devolve boolean
-  const addNewClient = async (rawCnpj: string): Promise<boolean> => {
-    const cnpjMasked = formatCNPJ(rawCnpj);
-
-    const exists = client.some((c) => c.cnpj === cnpjMasked);
-
-    if (exists) {
-      setError('O CNPJ informado já foi adicionado');
-      return false;
-    }
+    const addNewClient = async (rawCnpj: string): Promise<boolean> => {
 
     try {
         setIsLoading(true);
@@ -72,7 +81,7 @@ function NewClient({ clicked }: Props) {
         const resp = await fetch(`${URL}/consult`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cnpj: cnpjMasked }),
+                body: JSON.stringify({ cnpj: rawCnpj }),
         });
 
         if (resp.status === 429) {
@@ -84,24 +93,6 @@ function NewClient({ clicked }: Props) {
                 setError('Falha na consulta');
                 return false;
         }
-
-        
-
-
-        //  const data = (await resp.json()) as ConsultaDTO;
-
-        // // use função no setState para evitar condição de corrida
-        // setClient((prev) => [
-        //     ...prev,
-        //     {
-        //         razao: data.razao_social,
-        //         cnpj: cnpjMasked,
-        //         situacao: data.situacao,
-        //         fantasia: data.fantasia,
-        //         data_abertura: data.abertura,
-        //         tipo: data.tipo,
-        //     },
-        // ]);
 
         return true;
         

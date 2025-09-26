@@ -1,6 +1,7 @@
 .popup-container {
     position: fixed;
     justify-self: center;
+    align-self: center;
     color: white;
     margin-top: 2rem;
     padding: 1rem 1.5rem;

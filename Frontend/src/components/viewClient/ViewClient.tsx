@@ -102,7 +102,7 @@ function ViewClient({ clicked, cnpj }: Props) {
 
 
     return(
-        <>
+        <div>
             {error && <Error errorDescription={error}></Error>}
             {sucess && <Sucess popupDescription={sucess}></Sucess>}
             <div className='view-client-container'>
@@ -138,7 +138,7 @@ function ViewClient({ clicked, cnpj }: Props) {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
