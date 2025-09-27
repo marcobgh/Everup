@@ -8,7 +8,7 @@ interface Props {
 function Error( { errorDescription }: Props) {
     const [visible, setVisible] = useState(true);
 
-     useEffect(() => {
+    useEffect(() => {
     if (!errorDescription) return;
     setVisible(true);
 

@@ -1,0 +1,22 @@
+.popup-container {
+    position: fixed;
+    justify-self: center;
+    align-self: center;
+    color: white;
+    margin-top: 5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.popup-container.error {
+    background-color: rgba(228, 51, 51, 0.692);
+}
+
+.popup-container.success {
+    background-color: rgba(74, 205, 74, 0.692);
+}
+
+.popup-container.alert {
+    background-color: rgba(255, 217, 0, 0.696);
+}

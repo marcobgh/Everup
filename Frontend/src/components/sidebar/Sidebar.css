@@ -38,6 +38,12 @@ h1 {
     padding-right: 0.4rem;
 }
 
+.highlight {
+    background-color: rgb(54, 78, 95);
+    padding: 1rem;
+    border-radius: 10px;
+}
+
 .logged-user {
     display: flex;
     align-items: center;

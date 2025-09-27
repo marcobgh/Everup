@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
-import { useClientContext } from '../../context';
 import './NewClient.css'
-import Error from '../popup/Error';
-import Sucess from '../popup/Sucess';
+import { useUi } from "../../contexts/AlertContext";
+
 
 interface Props {
     clicked: (type: string) => void;
@@ -10,32 +9,30 @@ interface Props {
 
 const URL = 'http://localhost:5001';
 
-function formatCNPJ(value: string) {
-    return value
-    .replace(/\D/g, '')
-    .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
-}
+// function formatCNPJ(value: string) {
+//     return value
+//     .replace(/\D/g, '')
+//     .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+// }
 
 function NewClient({ clicked }: Props) {
+    const { showAlert } = useUi();
     const inputRef = useRef<HTMLInputElement>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [sucess, setSucess] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false); 
 
     const handleClick = async () => {
-        setError(null);
 
         const raw = String(inputRef.current?.value || '').trim();
         const cnpj = raw.replace(/\D/g, '');
         if (!raw) {
-            setError('O campo não pode estar em branco');
+            showAlert('O campo não pode estar em branco', "error");
             return;
         }
 
         // aceita digitado com/sem máscara
         
         if (cnpj.length !== 14) {
-            setError('O CNPJ deve ter 14 dígitos');
+            showAlert('O CNPJ deve ter 14 dígitos', "error");
             return;
         }
         
@@ -43,7 +40,7 @@ function NewClient({ clicked }: Props) {
         const clientExists =  await findClient(cnpj);
 
         if (clientExists) {
-            setError('O CNPJ informado já está cadastrado')
+            showAlert('O CNPJ informado já está cadastrado', "error")
             setIsLoading(false);
             return;
         }
@@ -51,7 +48,7 @@ function NewClient({ clicked }: Props) {
         const ok = await addNewClient(cnpj);
 
         if (ok) {
-            setSucess("Cliente adicionado com sucesso!");
+            showAlert("Cliente adicionado com sucesso!", 'success');
             clicked('close');
         }
 
@@ -69,47 +66,45 @@ function NewClient({ clicked }: Props) {
             return true;
         }   
         catch (err) {
-            setError('Não foi possível consultar a base de dados');
+            showAlert('Não foi possível consultar a base de dados', 'error');
         }
     }
 
     const addNewClient = async (rawCnpj: string): Promise<boolean> => {
 
-    try {
-        setIsLoading(true);
+        try {
+            setIsLoading(true);
 
-        const resp = await fetch(`${URL}/consult`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cnpj: rawCnpj }),
-        });
+            const resp = await fetch(`${URL}/consult`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cnpj: rawCnpj }),
+            });
 
-        if (resp.status === 429) {
-            setError('Tente novamente mais tarde')
+            if (resp.status === 429) {
+                showAlert('Tente novamente mais tarde', 'alert')
+            }
+
+            if (!resp.ok) {
+                    console.log(resp)
+                    showAlert('Falha na consulta', 'error');
+                    return false;
+            }
+
+            return true;
+            
+        } catch (e) {
+            console.log(e)
+            showAlert('Erro inesperado ao consultar', 'error');
+            return false;
+        } finally {
+            setIsLoading(false);
         }
-
-        if (!resp.ok) {
-                console.log(resp)
-                setError('Falha na consulta');
-                return false;
-        }
-
-        return true;
-        
-    } catch (e) {
-        console.log(e)
-        setError('Erro inesperado ao consultar');
-        return false;
-    } finally {
-        setIsLoading(false);
-    }
-  };
+    };
 
     
     return(
         <div className='new-client-container'>
-            {error && <Error errorDescription={error}></Error>}
-            {sucess && <Sucess popupDescription={sucess}></Sucess>}
             <form className=''>
                 <div className='close-btn' onClick={() => clicked('close')}><i className="fa-solid fa-xmark"></i></div>
                 <h1>Adicione novo CNPJ para consulta</h1>

@@ -25,7 +25,7 @@ server.get('/client/:cnpj', (req, res) => {
     const client = database.findClientByCnpj(String(cnpj));
 
     if (!client) {
-      return res.status(404).json({ error: 'Cliente não encontrado' });
+        return res.status(404).json({ error: 'Cliente não encontrado' });
     }
     return client;
 

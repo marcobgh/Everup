@@ -3,8 +3,9 @@ import Sidebar from "../components/sidebar/Sidebar"
 import ClientList from '../components/clientList/ClientList'
 import NewClient from '../components/newClient/NewClient'
 import { useState } from 'react'
-import { ClientContext, type Clients } from '../context'
 import ViewClient from '../components/viewClient/ViewClient'
+import { UiProvider } from "../contexts/AlertContext";
+
 
 function App() {
 
@@ -31,11 +32,9 @@ function App() {
     
   }
 
-  const [client, setClient] = useState<Clients[]>([])
-
   return (
     <div>
-      <ClientContext.Provider value={{client, setClient}}>
+      <UiProvider>
         <div className='container'>
           <Sidebar onSelectedOption={handleSelectedOption}></Sidebar>
           {selectedOption === 'clientList' && <ClientList onClicked={handleClicked}/>}
@@ -43,7 +42,7 @@ function App() {
           {selectedOption === 'viewClient' && <ViewClient clicked={handleSelectedOption} cnpj={String(choseClient)}></ViewClient>}
         </div>
         {(window === 'create') ? <NewClient clicked={handleClicked}></NewClient> : null}
-      </ClientContext.Provider>
+      </UiProvider>
     </div>
       
   )
