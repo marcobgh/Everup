@@ -107,43 +107,36 @@ server.put('/client/:cnpj', async (req, res) => {
 
 //Atualiza todos os CNPJs presentes na base de dados
 server.post('/consult/all', async (req, res) => {
-    for (let client in database.values()) {
+    for (let key of database) {
         try {
             const wsoptions = {
                 method: 'GET',
-                url: `https://receitaws.com.br/v1/cnpj/${client.cnpj}`,
+                url: `https://receitaws.com.br/v1/cnpj/${key}`,
                 headers: {Accept: 'application/json'}
                 
             };
-
+    
             const { data } = await axios.request(wsoptions);
-
+    
             const clientData = {
                 cnpj: data.cnpj.replace(/\D/g, ""),
                 razao_social: data.nome,
                 abertura: data.abertura,
                 tipo: data.tipo,
-                situacao: data.situacao
+                situacao: data.situacao,
+                fantasia: data.fantasia || "Não há informações"
             }
-            if (data.fantasia) {
-                clientData.fantasia = data.fantasia;
-            }
-            else {
-                clientData.fantasia = "Não há informações"
-            }
-
-            database.update(cnpj, clientData);
-
+    
+            database.update(key, clientData);
+    
         }
         catch(err) {
-            console.error(`Erro ao atualizar CNPJ ${client.cnpj}:`, err.message);
+            console.error(`Erro ao atualizar CNPJ ${key}:`, err.message);
         }
     }
 
     return res.status(200).send("Atualização concluída");
 })
-
-
 
 server.listen({ port: PORT })
     .then(() => console.log(`🚀 Server running on port ${PORT}`))
@@ -151,80 +144,3 @@ server.listen({ port: PORT })
         console.error(err)
         process.exit(1)
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import express, { json } from "express";
-// import axios from "axios";
-// import cors from 'cors'
-
-// const app = express();
-// const PORT = 5001
-
-// app.use(cors({
-//   origin: "http://localhost:5173",
-//   methods: ["GET", "POST", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-// }));
-
-// app.use(express.json());
-
-// app.post('/consult', async (req, res) => {
-
-//     const { cnpj } = req.body;
-
-//     if (!cnpj) {
-//         return res.status(400).json({ error: "CNPJ é obrigatório" });
-//     } 
-
-//     const formatedcnpj = cnpj.replace(/\D/g, "");
-
-//     const options = {
-//     method: 'GET',
-//     url: `https://receitaws.com.br/v1/cnpj/${formatedcnpj}`,
-//     headers: {Accept: 'application/json'}
-//     };
-
-//     try {
-//         const { data } = await axios.request(options);
-//         const clientData = {
-//             razao_social: data.nome,
-//             abertura: data.abertura,
-//             tipo: data.tipo,
-//             situacao: data.situacao 
-//         }
-
-//         if (data.fantasia) {
-//             clientData.fantasia = data.fantasia
-//         }
-//         else {
-//             clientData.fantasia = "Não há informações"
-//         }
-
-        
-//         res.json(clientData);
-//     } catch (error) {
-//         if(error.response.status === 429) {
-//             return res.status(429).json({ error: "Muitas requisições, tente novamente mais tarde"})
-//         }
-//     }
-// });
-
-// app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`)
-// })

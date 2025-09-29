@@ -27,4 +27,8 @@ export class DatabaseMemory {
     delete(cnpj) {
         this.#clients.delete(cnpj);
     }
+
+    [Symbol.iterator]() {
+        return this.#clients.keys();
+    }
 }
