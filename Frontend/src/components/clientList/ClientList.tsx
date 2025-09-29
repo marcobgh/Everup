@@ -1,6 +1,7 @@
 import "./ClientList.css"
-import { useClientContext } from "../../context";
 import { useEffect, useState } from "react";
+import { useUi } from "../../contexts/AlertContext";
+
 
 interface Props {
     onClicked: (type: string, cnpj?: string) => void;
@@ -20,8 +21,7 @@ const URL = 'http://localhost:5001';
 function ClientList ({ onClicked }:Props) {
 
     const [clients, setClients] = useState<Client[]>([]); 
-    const [error, setError] = useState<string | null>(null);
-    const [sucess, setSucess] = useState<string | null>(null);
+    const { showAlert } = useUi();
 
     const fetchClients = async () => {
         try{
@@ -31,7 +31,7 @@ function ClientList ({ onClicked }:Props) {
                 });
 
             if (resp.status === 404) {
-                setError('Não foi possível carregar a lista de clientes')
+                showAlert('Não foi possível carregar a lista de clientes', 'error')
                 return;
             }
             
@@ -40,7 +40,7 @@ function ClientList ({ onClicked }:Props) {
         }
         catch(err) {
             console.error("Erro ao buscar clientes:", err);
-            setError("Erro inesperado ao carregar clientes");
+            showAlert("Erro inesperado ao carregar clientes", 'error');
         }
     }
 
@@ -58,6 +58,7 @@ function ClientList ({ onClicked }:Props) {
                     <li onClick={fetchClients}><i className="fa-solid fa-arrows-rotate"></i></li>
                 </ul>
             </div>
+            {clients && clients.length > 0 ? (
             <table className="client-table">
                 <tr>
                     <th>Razão Social</th>
@@ -69,10 +70,16 @@ function ClientList ({ onClicked }:Props) {
                         <td>{client.razao_social}</td>
                         <td>{client.cnpj}</td>
                         <td>{client.situacao}</td>
-                        <td className="view-client-btn"><span onClick={() => {onClicked('viewClient', client.cnpj);}}className="btn-text"><i className="fa-solid fa-square-arrow-up-right"></i> </span></td>
+                        <td className="view-client-btn"><span className="btn-text"><i onClick={() => {onClicked('viewClient', client.cnpj);}} className="fa-solid fa-square-arrow-up-right"></i> </span></td>
                     </tr>
                 ))}
             </table>
+            ) : (
+                <div className="empty-warning">
+                    <i className="fa-regular fa-folder-open empty-icon"></i>
+                    <span>A lista de clientes está vazia</span>
+                </div>
+            )}
         </div>
     )
 }

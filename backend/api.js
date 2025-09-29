@@ -74,6 +74,7 @@ server.delete('/client/:cnpj', async (req, res) => {
     return res.status(204).send();
 })
 
+// Atualiza apenas um CNPJ por vez
 server.put('/client/:cnpj', async (req, res) => {
     const { cnpj } = req.params;
 
@@ -103,6 +104,46 @@ server.put('/client/:cnpj', async (req, res) => {
 
     return res.status(200).send();
 });
+
+//Atualiza todos os CNPJs presentes na base de dados
+server.post('/consult/all', async (req, res) => {
+    for (let client in database.values()) {
+        try {
+            const wsoptions = {
+                method: 'GET',
+                url: `https://receitaws.com.br/v1/cnpj/${client.cnpj}`,
+                headers: {Accept: 'application/json'}
+                
+            };
+
+            const { data } = await axios.request(wsoptions);
+
+            const clientData = {
+                cnpj: data.cnpj.replace(/\D/g, ""),
+                razao_social: data.nome,
+                abertura: data.abertura,
+                tipo: data.tipo,
+                situacao: data.situacao
+            }
+            if (data.fantasia) {
+                clientData.fantasia = data.fantasia;
+            }
+            else {
+                clientData.fantasia = "Não há informações"
+            }
+
+            database.update(cnpj, clientData);
+
+        }
+        catch(err) {
+            console.error(`Erro ao atualizar CNPJ ${client.cnpj}:`, err.message);
+        }
+    }
+
+    return res.status(200).send("Atualização concluída");
+})
+
+
 
 server.listen({ port: PORT })
     .then(() => console.log(`🚀 Server running on port ${PORT}`))

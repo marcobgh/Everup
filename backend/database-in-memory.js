@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto"
 
 export class DatabaseMemory {
     #clients = new Map()
@@ -10,7 +9,7 @@ export class DatabaseMemory {
     findClientByCnpj(cnpj) {
         for (const client of this.#clients.values()) {
             if (client.cnpj === cnpj) {
-              return client;
+                return client;
             }   
         }
         return undefined; // caso não encontre

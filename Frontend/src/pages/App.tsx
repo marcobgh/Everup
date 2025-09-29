@@ -5,6 +5,7 @@ import NewClient from '../components/newClient/NewClient'
 import { useState } from 'react'
 import ViewClient from '../components/viewClient/ViewClient'
 import { UiProvider } from "../contexts/AlertContext";
+import Actions from '../components/actions/Actions'
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Sidebar onSelectedOption={handleSelectedOption}></Sidebar>
           {selectedOption === 'clientList' && <ClientList onClicked={handleClicked}/>}
           {selectedOption === 'home' && <></>}
+          {selectedOption === 'actions' && <Actions></Actions>}
           {selectedOption === 'viewClient' && <ViewClient clicked={handleSelectedOption} cnpj={String(choseClient)}></ViewClient>}
         </div>
         {(window === 'create') ? <NewClient clicked={handleClicked}></NewClient> : null}
