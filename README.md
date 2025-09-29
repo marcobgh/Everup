@@ -4,13 +4,13 @@ Everup é um sistema criado com o objetivo de automatizar o processo de atualiza
 Embora tenha sido idealizado especialmente para instituições do sistema financeiro, que demandam maior rigor quanto à consistência de dados, em conformidade com normas de KYC (Know Your Customer) e PLD-FTP (Prevenção à Lavagem de Dinheiro e Financiamento ao Terrorismo), o Everup pode ser adotado por qualquer empresa que deseje manter sua base de clientes sempre atualizada.
 
 ## Links
-### Website
+Live website: 
 [https://ever-up.netlify.app/](https://ever-up.netlify.app/)
 
-### Vídeo de apresentação do MVP
+Vídeo de apresentação do MVP: 
 [https://youtu.be/kzGbEg6nDag](https://youtu.be/kzGbEg6nDag)
 
-### Repositório do backend
+Repositório do backend:
 [https://github.com/marcobgh/everup-backend](https://github.com/marcobgh/everup-backend)
 
 ## Funcionalidades
