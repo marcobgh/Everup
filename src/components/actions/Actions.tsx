@@ -2,7 +2,7 @@ import { useUi } from '../../contexts/AlertContext';
 import './Actions.css'
 
 function Actions() {
-    const URL = 'http://localhost:5001';
+    const URL = 'https://everup-backend.onrender.com';
     const { showAlert } = useUi();
 
     const handleClick = async () => {  

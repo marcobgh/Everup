@@ -7,7 +7,7 @@ interface Props {
     clicked: (type: string) => void;
 }
 
-const URL = 'http://localhost:5001';
+const URL = 'https://everup-backend.onrender.com';
 
 // function formatCNPJ(value: string) {
 //     return value

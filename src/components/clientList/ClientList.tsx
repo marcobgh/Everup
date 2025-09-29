@@ -16,7 +16,7 @@ interface Client {
     fantasia: string;
 }
 
-const URL = 'http://localhost:5001';
+const URL = 'https://everup-backend.onrender.com';
 
 function ClientList ({ onClicked }:Props) {
 
