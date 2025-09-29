@@ -3,6 +3,18 @@
 Everup é um sistema criado com o objetivo de automatizar o processo de atualização cadastral.
 Embora tenha sido idealizado especialmente para instituições do sistema financeiro, que demandam maior rigor quanto à consistência de dados, em conformidade com normas de KYC (Know Your Customer) e PLD-FTP (Prevenção à Lavagem de Dinheiro e Financiamento ao Terrorismo), o Everup pode ser adotado por qualquer empresa que deseje manter sua base de clientes sempre atualizada.
 
+## Links
+```
+# Website
+https://ever-up.netlify.app/
+
+# Vídeo de apresentação do MVP
+https://youtu.be/kzGbEg6nDag
+
+# Repositório do backend
+https://github.com/marcobgh/everup-backend
+```
+
 ## Funcionalidades
 
 - Consultas cadastrais individuais ou em lote, de forma manual ou periódica, sempre com informações atualizadas da Receita Federal.
