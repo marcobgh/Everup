@@ -38,7 +38,7 @@ Repositório do backend:
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/everup.git
+git clone https://github.com/marcobgh/Everup
 
 # Entre na pasta
 cd everup
